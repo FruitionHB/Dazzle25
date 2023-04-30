@@ -1,2 +1,3 @@
 # Hawkes Bay Dazzle Blocks
-Current Dazzle blocks in Hawkes Bay
+
+A web map of current NZ Dazzle blocks can be found <a href="https://larryamorgan.github.io/Dazzle_HB/">here.</a>
