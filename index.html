@@ -16,12 +16,6 @@
             padding: 0;
             margin: 0;
         }
-            .leaflet-popup-content > table img {
-			width: 1000px;
-			}
-			.leaflet-popup-content > img {
-			width: 1000px;
-			} 
         </style>
         <title></title>
     </head>
@@ -47,7 +41,7 @@
         }
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[-39.71175533736469,176.6420352003191],[-39.53455574636778,177.02387718272786]]);
+        }).fitBounds([[-39.75572790749977,176.64897237832915],[-39.55125192992197,177.08958341289406]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -55,10 +49,10 @@
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
         }
-        map.createPane('pane_ESRIImagery_0');
-        map.getPane('pane_ESRIImagery_0').style.zIndex = 400;
-        var layer_ESRIImagery_0 = L.tileLayer('https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            pane: 'pane_ESRIImagery_0',
+        map.createPane('pane_GoogleSatellite_0');
+        map.getPane('pane_GoogleSatellite_0').style.zIndex = 400;
+        var layer_GoogleSatellite_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleSatellite_0',
             opacity: 1.0,
             attribution: '',
             minZoom: 1,
@@ -66,8 +60,8 @@
             minNativeZoom: 0,
             maxNativeZoom: 22
         });
-        layer_ESRIImagery_0;
-        map.addLayer(layer_ESRIImagery_0);
+        layer_GoogleSatellite_0;
+        map.addLayer(layer_GoogleSatellite_0);
         function pop_Dazzleblocks_1(feature, layer) {
             layer.on({
                 mouseout: function(e) {
@@ -171,7 +165,7 @@
         bounds_group.addLayer(layer_Dazzleblocks_1);
         map.addLayer(layer_Dazzleblocks_1);
         var baseMaps = {};
-        L.control.layers(baseMaps,{'<img src="legend/Dazzleblocks_1.png" /> Dazzle blocks': layer_Dazzleblocks_1,"ESRI Imagery": layer_ESRIImagery_0,},{collapsed:false}).addTo(map);
+        L.control.layers(baseMaps,{'<img src="legend/Dazzleblocks_1.png" /> Dazzle blocks': layer_Dazzleblocks_1,"Google Satellite": layer_GoogleSatellite_0,},{collapsed:false}).addTo(map);
         setBounds();
         var i = 0;
         layer_Dazzleblocks_1.eachLayer(function(layer) {
