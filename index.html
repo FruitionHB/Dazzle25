@@ -8,7 +8,6 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
         <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/leaflet-search.css">
         <style>
         html, body, #map {
             width: 100%;
@@ -16,19 +15,10 @@
             padding: 0;
             margin: 0;
         }
-        .leaflet-popup-content > table img {
-			width: 150px;
-			}
-			.leaflet-popup-content > img {
-			width: 300px;
-		}
         </style>
-        <title></title>
+        <title>NZ Dazzle Blocks 2023</title>
     </head>
     <body>
-        <h1>HB Dazzle Blocks 2023</h1>
-        <div id="map">
-        </div>      
         <div id="map">
         </div>
         <script src="js/qgis2web_expressions.js"></script>
@@ -40,17 +30,26 @@
         <script src="js/rbush.min.js"></script>
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
-        <script src="js/leaflet-search.js"></script>
         <script src="data/Dazzleblocks_1.js"></script>
         <script>
         var highlightLayer;
         function highlightFeature(e) {
             highlightLayer = e.target;
-            highlightLayer.openPopup();
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
         }
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[-39.75572790749977,176.64897237832915],[-39.55125192992197,177.08958341289406]]);
+        }).fitBounds([[-41.41230056268839,172.7218341084171],[-41.04436028136315,173.57294671062763]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -74,12 +73,8 @@
         function pop_Dazzleblocks_1(feature, layer) {
             layer.on({
                 mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
                     }
                 },
                 mouseover: highlightFeature,
@@ -106,19 +101,19 @@
                         <td>' + (feature.properties['RPIN'] !== null ? autolinker.link(feature.properties['RPIN'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Block_name</th>\
+                        <th scope="row">Block name</th>\
                         <td>' + (feature.properties['Block_name'] !== null ? autolinker.link(feature.properties['Block_name'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Yr_planted</th>\
+                        <th scope="row">Yr planted</th>\
                         <td>' + (feature.properties['Yr_planted'] !== null ? autolinker.link(feature.properties['Yr_planted'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Row_width</th>\
+                        <th scope="row">Row width</th>\
                         <td>' + (feature.properties['Row_width'] !== null ? autolinker.link(feature.properties['Row_width'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Tree_space</th>\
+                        <th scope="row">Tree space</th>\
                         <td>' + (feature.properties['Tree_space'] !== null ? autolinker.link(feature.properties['Tree_space'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
@@ -130,15 +125,16 @@
                         <td>' + (feature.properties['Area (ha)'] !== null ? autolinker.link(feature.properties['Area (ha)'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Calc_trees</th>\
+                        <th scope="row">Calc. trees</th>\
                         <td>' + (feature.properties['Calc_trees'] !== null ? autolinker.link(feature.properties['Calc_trees'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Licence_trees</th>\
+                        <th scope="row">Licence trees</th>\
                         <td>' + (feature.properties['Licence_trees'] !== null ? autolinker.link(feature.properties['Licence_trees'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['Photo'] !== null ? '<img src="images/' + String(feature.properties['Photo']).replace(/[\\\/:]/g, '_').trim() + '">' : '') + '</td>\
+                        <th scope="row">Labels</th>\
+                        <td>' + (feature.properties['Labels_2'] !== null ? autolinker.link(feature.properties['Labels_2'].toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
@@ -173,6 +169,16 @@
         });
         bounds_group.addLayer(layer_Dazzleblocks_1);
         map.addLayer(layer_Dazzleblocks_1);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>NZ Dazzle Blocks 2023</h2>';
+            };
+            title.addTo(map);
         var baseMaps = {};
         L.control.layers(baseMaps,{'<img src="legend/Dazzleblocks_1.png" /> Dazzle blocks': layer_Dazzleblocks_1,"Google Satellite": layer_GoogleSatellite_0,},{collapsed:false}).addTo(map);
         setBounds();
@@ -182,20 +188,13 @@
                 feature: layer.feature,
                 variables: {}
             };
-            layer.bindTooltip((exp_label_Dazzleblocks_1_eval_expression(context) !== null?String('<div style="color: #ffffff; font-size: 10pt; font-weight: bold; font-family: \'Liberation Sans\', sans-serif;">' + exp_label_Dazzleblocks_1_eval_expression(context)) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Dazzleblocks_1'});
+            layer.bindTooltip((layer.feature.properties['Labels_2'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-weight: bold; font-family: \'Liberation Sans\', sans-serif;">' + layer.feature.properties['Labels_2']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Dazzleblocks_1'});
             labels.push(layer);
             totalMarkers += 1;
               layer.added = true;
               addLabel(layer, i);
               i++;
         });
-        map.addControl(new L.Control.Search({
-            layer: layer_Dazzleblocks_1,
-            initial: false,
-            hideMarkerOnCollapse: true,
-            propertyName: 'Grower'}));
-        document.getElementsByClassName('search-button')[0].className +=
-         ' fa fa-binoculars';
         resetLabels([layer_Dazzleblocks_1]);
         map.on("zoomend", function(){
             resetLabels([layer_Dazzleblocks_1]);

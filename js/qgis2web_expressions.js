@@ -754,17 +754,3 @@ function fnc__specialcol_(values, context) {
 function fnc_project_color(values, context) {
     return false;
 };
-
-
-
-function exp_label_Dazzleblocks_1_eval_expression(context) {
-    // Grower || '\n' || Block_name || '\n' || Yr_planted
-
-    var feature = context.feature;
-    
-    if (feature.properties) {
-        return ((((feature.properties['Grower']  + '\n') + feature.properties['Block_name'] ) + '\n') + feature.properties['Yr_planted'] );
-    } else {
-        return ((((feature['Grower']  + '\n') + feature['Block_name'] ) + '\n') + feature['Yr_planted'] );
-    }
-}
