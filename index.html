@@ -49,7 +49,7 @@
         }
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[-41.41230056268839,172.7218341084171],[-41.04436028136315,173.57294671062763]]);
+        }).fitBounds([[-38.712813738416514,177.78641443392848],[-38.58542177821468,178.05384702186905]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -133,8 +133,7 @@
                         <td>' + (feature.properties['Licence_trees'] !== null ? autolinker.link(feature.properties['Licence_trees'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Labels</th>\
-                        <td>' + (feature.properties['Labels_2'] !== null ? autolinker.link(feature.properties['Labels_2'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2">' + (feature.properties['Labels_2'] !== null ? autolinker.link(feature.properties['Labels_2'].toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
