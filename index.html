@@ -30,7 +30,7 @@
         <script src="js/rbush.min.js"></script>
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
-        <script src="data/Dazzleblocks_1.js"></script>
+        <script src="data/Dazzleblocks_2.js"></script>
         <script>
         var highlightLayer;
         function highlightFeature(e) {
@@ -49,7 +49,7 @@
         }
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[-39.711216120361556,176.69589316870866],[-39.55000752857141,177.00765176343535]]);
+        }).fitBounds([[-39.71842888668661,176.6626130042864],[-39.56851231040573,176.9647900369372]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -70,7 +70,20 @@
         });
         layer_ESRIImagery_0;
         map.addLayer(layer_ESRIImagery_0);
-        function pop_Dazzleblocks_1(feature, layer) {
+        map.createPane('pane_HB2023_1');
+        map.getPane('pane_HB2023_1').style.zIndex = 401;
+        var layer_HB2023_1 = L.tileLayer('https://tiles-cdn.koordinates.com/services;key=611290839ed346da8a0e4b5e8b39c2e9/tiles/v4/layer=112726/EPSG:3857/{z}/{x}/{y}.png', {
+            pane: 'pane_HB2023_1',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 18
+        });
+        layer_HB2023_1;
+        map.addLayer(layer_HB2023_1);
+        function pop_Dazzleblocks_2(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (i in e.target._eventParents) {
@@ -139,9 +152,9 @@
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_Dazzleblocks_1_0() {
+        function style_Dazzleblocks_2_0() {
             return {
-                pane: 'pane_Dazzleblocks_1',
+                pane: 'pane_Dazzleblocks_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -154,20 +167,20 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_Dazzleblocks_1');
-        map.getPane('pane_Dazzleblocks_1').style.zIndex = 401;
-        map.getPane('pane_Dazzleblocks_1').style['mix-blend-mode'] = 'normal';
-        var layer_Dazzleblocks_1 = new L.geoJson(json_Dazzleblocks_1, {
+        map.createPane('pane_Dazzleblocks_2');
+        map.getPane('pane_Dazzleblocks_2').style.zIndex = 402;
+        map.getPane('pane_Dazzleblocks_2').style['mix-blend-mode'] = 'normal';
+        var layer_Dazzleblocks_2 = new L.geoJson(json_Dazzleblocks_2, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Dazzleblocks_1',
-            layerName: 'layer_Dazzleblocks_1',
-            pane: 'pane_Dazzleblocks_1',
-            onEachFeature: pop_Dazzleblocks_1,
-            style: style_Dazzleblocks_1_0,
+            dataVar: 'json_Dazzleblocks_2',
+            layerName: 'layer_Dazzleblocks_2',
+            pane: 'pane_Dazzleblocks_2',
+            onEachFeature: pop_Dazzleblocks_2,
+            style: style_Dazzleblocks_2_0,
         });
-        bounds_group.addLayer(layer_Dazzleblocks_1);
-        map.addLayer(layer_Dazzleblocks_1);
+        bounds_group.addLayer(layer_Dazzleblocks_2);
+        map.addLayer(layer_Dazzleblocks_2);
             var title = new L.Control();
             title.onAdd = function (map) {
                 this._div = L.DomUtil.create('div', 'info');
@@ -179,30 +192,30 @@
             };
             title.addTo(map);
         var baseMaps = {};
-        L.control.layers(baseMaps,{'<img src="legend/Dazzleblocks_1.png" /> Dazzle blocks': layer_Dazzleblocks_1,"ESRI Imagery": layer_ESRIImagery_0,},{collapsed:false}).addTo(map);
+        L.control.layers(baseMaps,{'<img src="legend/Dazzleblocks_2.png" /> Dazzle blocks': layer_Dazzleblocks_2,"HB 2023": layer_HB2023_1,"ESRI Imagery": layer_ESRIImagery_0,},{collapsed:false}).addTo(map);
         setBounds();
         var i = 0;
-        layer_Dazzleblocks_1.eachLayer(function(layer) {
+        layer_Dazzleblocks_2.eachLayer(function(layer) {
             var context = {
                 feature: layer.feature,
                 variables: {}
             };
-            layer.bindTooltip((layer.feature.properties['Labels_2'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-weight: bold; font-family: \'Liberation Sans\', sans-serif;">' + layer.feature.properties['Labels_2']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Dazzleblocks_1'});
+            layer.bindTooltip((layer.feature.properties['Labels_2'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-weight: bold; font-family: \'Liberation Sans\', sans-serif;">' + layer.feature.properties['Labels_2']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Dazzleblocks_2'});
             labels.push(layer);
             totalMarkers += 1;
               layer.added = true;
               addLabel(layer, i);
               i++;
         });
-        resetLabels([layer_Dazzleblocks_1]);
+        resetLabels([layer_Dazzleblocks_2]);
         map.on("zoomend", function(){
-            resetLabels([layer_Dazzleblocks_1]);
+            resetLabels([layer_Dazzleblocks_2]);
         });
         map.on("layeradd", function(){
-            resetLabels([layer_Dazzleblocks_1]);
+            resetLabels([layer_Dazzleblocks_2]);
         });
         map.on("layerremove", function(){
-            resetLabels([layer_Dazzleblocks_1]);
+            resetLabels([layer_Dazzleblocks_2]);
         });
         </script>
     </body>
