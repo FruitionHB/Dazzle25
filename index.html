@@ -6,9 +6,11 @@
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
-        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
         <style>
         html, body, #map {
             width: 100%;
@@ -17,13 +19,15 @@
             margin: 0;
         }
         </style>
-        <title>NZ Dazzle Blocks 2023</title>
+        <title>NZ Dazzle Blocks 2024</title>
     </head>
     <body>
         <div id="map">
         </div>
         <script src="js/qgis2web_expressions.js"></script>
-        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/L.Control.Locate.min.js"></script>
         <script src="js/leaflet.rotatedMarker.js"></script>
         <script src="js/leaflet.pattern.js"></script>
         <script src="js/leaflet-hash.js"></script>
@@ -31,14 +35,13 @@
         <script src="js/rbush.min.js"></script>
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
-        <script src="js/leaflet-search.js"></script>
-        <script src="data/Dazzleweb_2.js"></script>
+        <script src="data/Dazzle24_3_web_1.js"></script>
         <script>
         var highlightLayer;
         function highlightFeature(e) {
             highlightLayer = e.target;
 
-            if (e.target.feature.geometry.type === 'LineString') {
+            if (e.target.feature.geometry.type === 'LineString' || e.target.feature.geometry.type === 'MultiLineString') {
               highlightLayer.setStyle({
                 color: '#ffff00',
               });
@@ -50,32 +53,60 @@
             }
         }
         var map = L.map('map', {
-            zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[-39.73980873453121,176.6512975414434],[-39.49344361114862,177.06103418168723]]);
+            zoomControl:false, maxZoom:28, minZoom:1
+        }).fitBounds([[-39.69755661026655,176.57527291380973],[-39.453195580535684,177.0614385779124]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        // remove popup's row if "visible-with-data"
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        // add class to format popup if it contains media
+		function addClassToPopupIfMedia(content, popup) {
+			var tempDiv = document.createElement('div');
+			tempDiv.innerHTML = content;
+			if (tempDiv.querySelector('td img')) {
+				popup._contentNode.classList.add('media');
+					// Delay to force the redraw
+					setTimeout(function() {
+						popup.update();
+					}, 10);
+			} else {
+				popup._contentNode.classList.remove('media');
+			}
+		}
+        var title = new L.Control({'position':'topleft'});
+        title.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+        };
+        title.update = function () {
+            this._div.innerHTML = '<h2>NZ Dazzle Blocks 2024</h2>';
+        };
+        title.addTo(map);
+        var zoomControl = L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
         L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
         }
-        map.createPane('pane_GoogleSatellite_0');
-        map.getPane('pane_GoogleSatellite_0').style.zIndex = 400;
-        var layer_GoogleSatellite_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-            pane: 'pane_GoogleSatellite_0',
-            opacity: 1.0,
-            attribution: '',
-            minZoom: 1,
-            maxZoom: 28,
-            minNativeZoom: 0,
-            maxNativeZoom: 22
-        });
-        layer_GoogleSatellite_0;
-        map.addLayer(layer_GoogleSatellite_0);
-        map.createPane('pane_Roadnames_1');
-        map.getPane('pane_Roadnames_1').style.zIndex = 401;
-        var layer_Roadnames_1 = L.tileLayer('https://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}', {
-            pane: 'pane_Roadnames_1',
+        map.createPane('pane_GoogleHybrid_0');
+        map.getPane('pane_GoogleHybrid_0').style.zIndex = 400;
+        var layer_GoogleHybrid_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleHybrid_0',
             opacity: 1.0,
             attribution: '',
             minZoom: 1,
@@ -83,22 +114,20 @@
             minNativeZoom: 0,
             maxNativeZoom: 18
         });
-        layer_Roadnames_1;
-        map.addLayer(layer_Roadnames_1);
-        function pop_Dazzleweb_2(feature, layer) {
+        layer_GoogleHybrid_0;
+        map.addLayer(layer_GoogleHybrid_0);
+        function pop_Dazzle24_3_web_1(feature, layer) {
             layer.on({
                 mouseout: function(e) {
-                    for (i in e.target._eventParents) {
-                        e.target._eventParents[i].resetStyle(e.target);
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
                     }
                 },
                 mouseover: highlightFeature,
             });
             var popupContent = '<table>\
-                    <tr>\
-                        <th scope="row">ID</th>\
-                        <td>' + (feature.properties['ID'] !== null ? autolinker.link(feature.properties['ID'].toLocaleString()) : '') + '</td>\
-                    </tr>\
                     <tr>\
                         <th scope="row">Grower</th>\
                         <td>' + (feature.properties['Grower'] !== null ? autolinker.link(feature.properties['Grower'].toLocaleString()) : '') + '</td>\
@@ -116,32 +145,24 @@
                         <td>' + (feature.properties['RPIN'] !== null ? autolinker.link(feature.properties['RPIN'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Block</th>\
+                        <th scope="row">Block name</th>\
                         <td>' + (feature.properties['Block_name'] !== null ? autolinker.link(feature.properties['Block_name'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Planted</th>\
+                        <th scope="row">Year planted</th>\
                         <td>' + (feature.properties['Yr_planted'] !== null ? autolinker.link(feature.properties['Yr_planted'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Grafted</th>\
+                        <th scope="row">Year grafted</th>\
                         <td>' + (feature.properties['Yr_grafted'] !== null ? autolinker.link(feature.properties['Yr_grafted'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Rootstock</th>\
-                        <td>' + (feature.properties['Rootstock'] !== null ? autolinker.link(feature.properties['Rootstock'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Row (m)</th>\
+                        <th scope="row">Row width</th>\
                         <td>' + (feature.properties['Row_width'] !== null ? autolinker.link(feature.properties['Row_width'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Tree (m)</th>\
+                        <th scope="row">Tree spacing</th>\
                         <td>' + (feature.properties['Tree_space'] !== null ? autolinker.link(feature.properties['Tree_space'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Rows</th>\
-                        <td>' + (feature.properties['Rows'] !== null ? autolinker.link(feature.properties['Rows'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Density</th>\
@@ -156,96 +177,81 @@
                         <td>' + (feature.properties['Calc_trees'] !== null ? autolinker.link(feature.properties['Calc_trees'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Licenced trees</th>\
+                        <th scope="row">Licensed trees</th>\
                         <td>' + (feature.properties['Licence_trees'] !== null ? autolinker.link(feature.properties['Licence_trees'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rootstock</th>\
+                        <td>' + (feature.properties['Rootstock'] !== null ? autolinker.link(feature.properties['Rootstock'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rows</th>\
+                        <td>' + (feature.properties['Rows'] !== null ? autolinker.link(feature.properties['Rows'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Training</th>\
                         <td>' + (feature.properties['Training'] !== null ? autolinker.link(feature.properties['Training'].toLocaleString()) : '') + '</td>\
                     </tr>\
-                    <tr>\
-                        <th scope="row">Notes</th>\
-                        <td>' + (feature.properties['Notes'] !== null ? autolinker.link(feature.properties['Notes'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">Label</th>\
-                        <td>' + (feature.properties['Labels_3'] !== null ? autolinker.link(feature.properties['Labels_3'].toLocaleString()) : '') + '</td>\
-                    </tr>\
                 </table>';
-            layer.bindPopup(popupContent, {maxHeight: 400});
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_Dazzleweb_2_0() {
+        function style_Dazzle24_3_web_1_0() {
             return {
-                pane: 'pane_Dazzleweb_2',
+                pane: 'pane_Dazzle24_3_web_1',
                 opacity: 1,
-                color: 'rgba(35,35,35,0.752)',
+                color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(230,152,0,0.752)',
+                fillColor: 'rgba(230,152,0,1.0)',
                 interactive: true,
             }
         }
-        map.createPane('pane_Dazzleweb_2');
-        map.getPane('pane_Dazzleweb_2').style.zIndex = 402;
-        map.getPane('pane_Dazzleweb_2').style['mix-blend-mode'] = 'normal';
-        var layer_Dazzleweb_2 = new L.geoJson(json_Dazzleweb_2, {
+        map.createPane('pane_Dazzle24_3_web_1');
+        map.getPane('pane_Dazzle24_3_web_1').style.zIndex = 401;
+        map.getPane('pane_Dazzle24_3_web_1').style['mix-blend-mode'] = 'normal';
+        var layer_Dazzle24_3_web_1 = new L.geoJson(json_Dazzle24_3_web_1, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Dazzleweb_2',
-            layerName: 'layer_Dazzleweb_2',
-            pane: 'pane_Dazzleweb_2',
-            onEachFeature: pop_Dazzleweb_2,
-            style: style_Dazzleweb_2_0,
+            dataVar: 'json_Dazzle24_3_web_1',
+            layerName: 'layer_Dazzle24_3_web_1',
+            pane: 'pane_Dazzle24_3_web_1',
+            onEachFeature: pop_Dazzle24_3_web_1,
+            style: style_Dazzle24_3_web_1_0,
         });
-        bounds_group.addLayer(layer_Dazzleweb_2);
-        map.addLayer(layer_Dazzleweb_2);
-            var title = new L.Control();
-            title.onAdd = function (map) {
-                this._div = L.DomUtil.create('div', 'info');
-                this.update();
-                return this._div;
-            };
-            title.update = function () {
-                this._div.innerHTML = '<h2>NZ Dazzle Blocks 2023</h2>';
-            };
-            title.addTo(map);
-        var baseMaps = {};
-        L.control.layers(baseMaps,{'<img src="legend/Dazzleweb_2.png" /> Dazzle web': layer_Dazzleweb_2,"Road names": layer_Roadnames_1,"Google Satellite": layer_GoogleSatellite_0,},{collapsed:false}).addTo(map);
+        bounds_group.addLayer(layer_Dazzle24_3_web_1);
+        map.addLayer(layer_Dazzle24_3_web_1);
         setBounds();
         var i = 0;
-        layer_Dazzleweb_2.eachLayer(function(layer) {
+        layer_Dazzle24_3_web_1.eachLayer(function(layer) {
             var context = {
                 feature: layer.feature,
                 variables: {}
             };
-            layer.bindTooltip((layer.feature.properties['Labels_3'] !== null?String('<div style="color: #ffffff; font-size: 12pt; font-weight: bold; font-family: \'Noto Sans\', sans-serif;">' + layer.feature.properties['Labels_3']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Dazzleweb_2'});
+            layer.bindTooltip((layer.feature.properties['Labels_2'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-weight: bold; font-family: \'Liberation Sans\', sans-serif;">' + layer.feature.properties['Labels_2']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Dazzle24_3_web_1'});
             labels.push(layer);
             totalMarkers += 1;
               layer.added = true;
               addLabel(layer, i);
               i++;
         });
-        map.addControl(new L.Control.Search({
-            layer: layer_Dazzleweb_2,
-            initial: false,
-            hideMarkerOnCollapse: true,
-            propertyName: 'Region'}));
-        document.getElementsByClassName('search-button')[0].className +=
-         ' fa fa-binoculars';
-        resetLabels([layer_Dazzleweb_2]);
+        resetLabels([layer_Dazzle24_3_web_1]);
         map.on("zoomend", function(){
-            resetLabels([layer_Dazzleweb_2]);
+            resetLabels([layer_Dazzle24_3_web_1]);
         });
         map.on("layeradd", function(){
-            resetLabels([layer_Dazzleweb_2]);
+            resetLabels([layer_Dazzle24_3_web_1]);
         });
         map.on("layerremove", function(){
-            resetLabels([layer_Dazzleweb_2]);
+            resetLabels([layer_Dazzle24_3_web_1]);
         });
         </script>
     </body>
