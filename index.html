@@ -19,7 +19,7 @@
             margin: 0;
         }
         </style>
-        <title>NZ Dazzle Blocks 2024</title>
+        <title>NZ Dazzle Blocks 2025</title>
     </head>
     <body>
         <div id="map">
@@ -54,7 +54,7 @@
         }
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
-        }).fitBounds([[-39.69755661026655,176.57527291380973],[-39.453195580535684,177.0614385779124]]);
+        }).fitBounds([[-39.91607208426742,176.36216629606025],[-39.57742243298913,177.150710273547]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -93,7 +93,7 @@
             return this._div;
         };
         title.update = function () {
-            this._div.innerHTML = '<h2>NZ Dazzle Blocks 2024</h2>';
+            this._div.innerHTML = '<h2>NZ Dazzle Blocks 2025</h2>';
         };
         title.addTo(map);
         var zoomControl = L.control.zoom({
@@ -130,67 +130,67 @@
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">Grower</th>\
-                        <td>' + (feature.properties['Grower'] !== null ? autolinker.link(feature.properties['Grower'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Grower'] !== null ? autolinker.link(String(feature.properties['Grower']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Address</th>\
-                        <td>' + (feature.properties['Address'] !== null ? autolinker.link(feature.properties['Address'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Address'] !== null ? autolinker.link(String(feature.properties['Address']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Region</th>\
-                        <td>' + (feature.properties['Region'] !== null ? autolinker.link(feature.properties['Region'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Region'] !== null ? autolinker.link(String(feature.properties['Region']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">RPIN</th>\
-                        <td>' + (feature.properties['RPIN'] !== null ? autolinker.link(feature.properties['RPIN'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['RPIN'] !== null ? autolinker.link(String(feature.properties['RPIN']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Block name</th>\
-                        <td>' + (feature.properties['Block_name'] !== null ? autolinker.link(feature.properties['Block_name'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Block_name'] !== null ? autolinker.link(String(feature.properties['Block_name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Year planted</th>\
-                        <td>' + (feature.properties['Yr_planted'] !== null ? autolinker.link(feature.properties['Yr_planted'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Yr_planted'] !== null ? autolinker.link(String(feature.properties['Yr_planted']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Year grafted</th>\
-                        <td>' + (feature.properties['Yr_grafted'] !== null ? autolinker.link(feature.properties['Yr_grafted'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Yr_grafted'] !== null ? autolinker.link(String(feature.properties['Yr_grafted']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Row width</th>\
-                        <td>' + (feature.properties['Row_width'] !== null ? autolinker.link(feature.properties['Row_width'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Row_width'] !== null ? autolinker.link(String(feature.properties['Row_width']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Tree spacing</th>\
-                        <td>' + (feature.properties['Tree_space'] !== null ? autolinker.link(feature.properties['Tree_space'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Tree_space'] !== null ? autolinker.link(String(feature.properties['Tree_space']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Density</th>\
-                        <td>' + (feature.properties['Density'] !== null ? autolinker.link(feature.properties['Density'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Density'] !== null ? autolinker.link(String(feature.properties['Density']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Area (ha)</th>\
-                        <td>' + (feature.properties['Area (ha)'] !== null ? autolinker.link(feature.properties['Area (ha)'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Area (ha)'] !== null ? autolinker.link(String(feature.properties['Area (ha)']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Calculated trees</th>\
-                        <td>' + (feature.properties['Calc_trees'] !== null ? autolinker.link(feature.properties['Calc_trees'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Calc_trees'] !== null ? autolinker.link(String(feature.properties['Calc_trees']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Licensed trees</th>\
-                        <td>' + (feature.properties['Licence_trees'] !== null ? autolinker.link(feature.properties['Licence_trees'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Licence_trees'] !== null ? autolinker.link(String(feature.properties['Licence_trees']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Rootstock</th>\
-                        <td>' + (feature.properties['Rootstock'] !== null ? autolinker.link(feature.properties['Rootstock'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Rootstock'] !== null ? autolinker.link(String(feature.properties['Rootstock']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Rows</th>\
-                        <td>' + (feature.properties['Rows'] !== null ? autolinker.link(feature.properties['Rows'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Rows'] !== null ? autolinker.link(String(feature.properties['Rows']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">Training</th>\
-                        <td>' + (feature.properties['Training'] !== null ? autolinker.link(feature.properties['Training'].toLocaleString()) : '') + '</td>\
+                        <td>' + (feature.properties['Training'] !== null ? autolinker.link(String(feature.properties['Training']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
